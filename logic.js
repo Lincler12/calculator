@@ -5,10 +5,14 @@ function calculator() {
     let firstRun = false;
     const myRegexOfOperators = new RegExp(regexString, 'i');
     const displayTextElement = document.getElementById('display-text');
+    let previousResultElement = document.getElementById('result');
     function clear() {
         const clearButtonElement = document.getElementById('AC');
         function clearLogic() {
             displayTextElement.textContent = '';
+            previousResult = '';
+            previousResultElement.textContent = '';
+            previousResultElement.display = 'none';
         }
         clearButtonElement.addEventListener('click', clearLogic);
     }
@@ -113,7 +117,7 @@ function calculator() {
                 for (let i = 0; i < length; i++) {
                     if (operatorStack[i] === '*' || operatorStack[i] === '/') {
                         result = operation().operate(operatorStack.splice(i, 1)[0], numberStack.splice(i, 1)[0], numberStack.splice(i, 1)[0]);
-                        
+
                         if (numberStack[i]) {
                             numberStack.splice(i, 0, result);
                         } else {
@@ -134,37 +138,44 @@ function calculator() {
             previousResult = displayTextElement.textContent;
             displayTextElement.textContent = '';
             displayTextElement.textContent = numberStack[0];
+            // previousResult += '=' + displayTextElement.textContent;
+            previousResult += '=';
+            previousResultElement.textContent = previousResult;
+            previousResultElement.style.display = 'block';
         }
 
         result();
     }
     document.getElementById('equals').addEventListener('click', evaluate);
 
-    function display() {
+    function display(e) {
 
 
         const maxCharDisplayCapacity = 10;
         const buttonElements = document.getElementsByTagName('button');
+        let lastCharFromDText = displayTextElement.textContent.slice(displayTextElement.textContent.length - 1);
         function displayText(e) {
-            // if (firstRun && resetDisplayTextAfterResult) {
-            //     previousResult = displayTextElement.textContent;
-            //     previousResultElement = document.getElementById('result');
-            //     previousResultElement.textContent = previousResult;
-            //     // previousResultElement.style.display = 'block';
+            if (e.target.id === 'equals' || e.target.id ==='AC') {
+                return;
+            }
 
-            // }
-            let lastCharFromDText = displayTextElement.textContent.slice(displayTextElement.textContent.length - 1);
+            if (firstRun && resetDisplayTextAfterResult) {
+                previousResult += displayTextElement.textContent;
+                previousResultElement = document.getElementById('result');
+                previousResultElement.textContent = previousResult;
+
+
+            }
+
             if (displayTextElement.textContent.length < maxCharDisplayCapacity) {
                 switch (e.target.dataset.button) {
                     case 'basic':
                         if (resetDisplayTextAfterResult) {
-                            previousResult += '=' + displayTextElement.textContent;
-                            previousResultElement = document.getElementById('result');
-                            previousResultElement.textContent = previousResult;
-                            previousResultElement.style.display = 'block';
+
                             displayTextElement.textContent = ' ';
                             resetDisplayTextAfterResult = false;
                         }
+
                         displayTextElement.textContent += e.target.textContent;
                         break;
                     case 'options':
