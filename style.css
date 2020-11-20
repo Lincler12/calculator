@@ -24,11 +24,7 @@ body {
   justify-content: center;
   align-content: center;
   background: rgb(69, 123, 157);
-  background: linear-gradient(
-    0deg,
-    rgba(69, 123, 157, 1) 0%,
-    rgba(29, 53, 87, 1) 100%
-  );
+
 }
 
 div#calculator {
