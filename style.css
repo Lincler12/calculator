@@ -1,0 +1,114 @@
+* {
+  --Imperial-Red: #e63946;
+  --Honeydew: #f1faee;
+  --Powder-Blue: #a8dadc;
+  --Celadon-Blue: #457b9d;
+  --Prussian-Blue: #1d3557;
+}
+
+html {
+  font-size: 62.5%;
+  height: 100vh;
+  width: 100vw;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  font-size: 1.6rem;
+  display: grid;
+  grid-template-columns: max-content;
+  grid-template-rows: max-content;
+  justify-content: center;
+  align-content: center;
+  background: rgb(69, 123, 157);
+  background: linear-gradient(
+    0deg,
+    rgba(69, 123, 157, 1) 0%,
+    rgba(29, 53, 87, 1) 100%
+  );
+}
+
+div#calculator {
+  width: 50rem;
+  height: 70rem;
+  background-color: var(--Honeydew);
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px #888888;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid var(--Prussian-Blue);
+  padding: 2rem;
+}
+
+div#display {
+  width: 100%;
+  height: 20rem;
+  background-color: white;
+  border: 2px solid #eeeeee;
+  border-radius: 5px;
+  display: grid;
+
+  grid-template-rows: auto auto;
+  font-size: 70px;
+  font-weight: normal;
+  color: #555555;
+  padding: 1rem 1rem;
+  overflow: hidden;
+}
+div#display p {
+  margin: 0.5rem 0;
+  max-width: 100%;
+  word-wrap: break-word;
+  text-align: right;
+}
+div#display p#result {
+  font-size: 28px;
+  color: var(--Powder-Blue);
+  text-align: right;
+  display: none;
+}
+
+button {
+  width: 100%;
+  height: 60%;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: large;
+}
+
+button:hover {
+  filter: brightness(1.05);
+  cursor: pointer;
+}
+
+button:active {
+  filter: brightness(1.02);
+}
+
+button.basic {
+  background-color: var(--Powder-Blue);
+}
+
+button.options {
+  background-color: var(--Celadon-Blue);
+  color: white;
+}
+button#equals {
+  background-color: var(--Imperial-Red);
+  color: white;
+}
+
+div#main-content {
+  width: 100%;
+  height: 80%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  column-gap: 1rem;
+  align-items: center;
+}
