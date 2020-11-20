@@ -2,13 +2,17 @@ function calculator() {
     let regexString = /[x\-+\/]/;
     let previousResult;
     let resetDisplayTextAfterResult = false;
+    let lastCharFromDText;
     let firstRun = false;
+    let number = '';
     const myRegexOfOperators = new RegExp(regexString, 'i');
     const displayTextElement = document.getElementById('display-text');
+    displayTextElement.textContent = '';
     let previousResultElement = document.getElementById('result');
     function clear() {
         const clearButtonElement = document.getElementById('AC');
         function clearLogic() {
+            number = '';
             displayTextElement.textContent = '';
             previousResult = '';
             previousResultElement.textContent = '';
@@ -27,7 +31,9 @@ function calculator() {
             }
         }
         function add(number1, number2) {
-            return parseInt(number1) + parseInt(number2);
+            number1 *= 1;
+            number2 *= 1;
+            return number1 + number2;
         }
 
         function subtract(number1, number2) {
@@ -67,7 +73,7 @@ function calculator() {
     }
 
     function evaluate() {
-        if (!displayTextElement.textContent === '')
+        if (displayTextElement.textContent === '' || displayTextElement.textContent === '.')
             return;
         let evalString = displayTextElement.textContent;
         let tokenizedArray = [];
@@ -111,6 +117,10 @@ function calculator() {
         populateStacks();
 
         function result() {
+            lastCharFromDText = displayTextElement.textContent.slice(displayTextElement.textContent.length - 1);
+            if(lastCharFromDText === '.' || myRegexOfOperators.test(lastCharFromDText)){
+                return;
+            }
             let result;
             while (operatorStack.length) {
                 let length = operatorStack.length;
@@ -135,6 +145,11 @@ function calculator() {
                 firstRun = true;
             }
             resetDisplayTextAfterResult = true;
+            if (displayTextElement.textContent[0] === '0' && !isNaN(displayTextElement.textContent[1])) {
+                let array = displayTextElement.textContent.split('');
+                array.shift();
+                displayTextElement.textContent = array.join('');
+            }
             previousResult = displayTextElement.textContent;
             displayTextElement.textContent = '';
             displayTextElement.textContent = numberStack[0];
@@ -142,6 +157,7 @@ function calculator() {
             previousResult += '=';
             previousResultElement.textContent = previousResult;
             previousResultElement.style.display = 'block';
+            number = '';
         }
 
         result();
@@ -150,13 +166,22 @@ function calculator() {
 
     function display(e) {
 
-
+        
         const maxCharDisplayCapacity = 11;
         const buttonElements = document.getElementsByTagName('button');
-       
+
         function displayText(e) {
-            let lastCharFromDText = displayTextElement.textContent.slice(displayTextElement.textContent.length - 1);
-            if (e.target.id === 'equals' || e.target.id ==='AC') {
+            if (displayTextElement.textContent === '') {
+                if (e.target.id === 'full-stop') {
+                    return;
+                }
+                if (e.target.dataset.button === 'options') {
+                    return;
+                }
+            }
+            lastCharFromDText = displayTextElement.textContent.slice(displayTextElement.textContent.length - 1);
+
+            if (e.target.id === 'equals' || e.target.id === 'AC') {
                 return;
             }
 
@@ -173,21 +198,37 @@ function calculator() {
                     case 'basic':
                         if (resetDisplayTextAfterResult) {
 
-                            displayTextElement.textContent = ' ';
+                            displayTextElement.textContent = '';
+                            lastCharFromDText = '';
                             resetDisplayTextAfterResult = false;
                         }
+                       
+                        if(e.target.textContent === '.'){
+                            if(number.indexOf('.') !== -1){
+                                return;
+                            }
+                            if (lastCharFromDText === '' || lastCharFromDText === '.' || myRegexOfOperators.test(lastCharFromDText)) {
+                                return ;
+                            }
+                            
+                        }
+                        number += e.target.textContent;
+                        
 
                         displayTextElement.textContent += e.target.textContent;
                         break;
+
                     case 'options':
                         resetDisplayTextAfterResult = false;
-                        if (lastCharFromDText === ' ') {
+                        if (lastCharFromDText === '' || lastCharFromDText === '.') {
                             if (e.target.id = 'subtract') {
-                                displayTextElement.textContent = e.target.textContent;
+                                return;
                             }
+                           
                         }
                         if (!(myRegexOfOperators.test(lastCharFromDText))) {
                             displayTextElement.textContent += e.target.textContent;
+                            number = '';
                         }
 
                 }
