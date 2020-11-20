@@ -151,10 +151,11 @@ function calculator() {
     function display(e) {
 
 
-        const maxCharDisplayCapacity = 10;
+        const maxCharDisplayCapacity = 11;
         const buttonElements = document.getElementsByTagName('button');
-        let lastCharFromDText = displayTextElement.textContent.slice(displayTextElement.textContent.length - 1);
+       
         function displayText(e) {
+            let lastCharFromDText = displayTextElement.textContent.slice(displayTextElement.textContent.length - 1);
             if (e.target.id === 'equals' || e.target.id ==='AC') {
                 return;
             }
