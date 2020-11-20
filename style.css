@@ -53,7 +53,8 @@ div#display {
   border-radius: 5px;
   display: grid;
 
-  grid-template-rows: auto auto;
+  grid-template-rows: 1fr 2fr;
+  grid-template-areas: 'previousResult''currentResult';
   font-size: 70px;
   font-weight: normal;
   color: #555555;
@@ -66,7 +67,13 @@ div#display p {
   word-wrap: break-word;
   text-align: right;
 }
+
+div#display p#display-text{
+    align-self: self-end;
+    grid-area: currentResult;
+}
 div#display p#result {
+    grid-area:previousResult;
   font-size: 28px;
   color: var(--Powder-Blue);
   text-align: right;
